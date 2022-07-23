@@ -1,0 +1,39 @@
+.headerContainer{
+    width: 100%;
+    height: auto;
+    background-color: #3AB4F2;
+    color: white;
+}
+
+.headerContentContainer{
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.headerLogo{
+    font-size: 3rem;
+    margin-left: 2%;
+    padding : 1%
+}
+
+.headerLinks{
+    font-size: 1.5rem;
+    margin-right: 2%;
+}
+
+.links{
+    text-decoration: none;
+    cursor: pointer;
+    color: white;
+    text-decoration: none;
+}
+
+.linkIsActive{
+    text-decoration: none;
+    cursor: pointer;
+    color: #0078AA;
+    text-decoration: none;
+    
+}
