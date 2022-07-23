@@ -11,7 +11,7 @@ const Header = function(props){
                 </div>
                 <div className={classes.headerLinks}>
                     <NavLink to="/signup" className={({ isActive }) => isActive ? classes.linkIsActive : classes.links } >
-                        <p>Signup</p>
+                        <p>Sign Up</p>
                     </NavLink>
                 </div>
             </section>

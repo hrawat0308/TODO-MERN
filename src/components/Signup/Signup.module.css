@@ -1,7 +1,68 @@
-/* .signupContainer{
+.signupContainer{
     margin-top: 3%;
-    width: 60%;
+    width: 40%;
     margin-left: auto;
     margin-right: auto;
-    border : 1px solid black
-} */
+    background-color: #0078AA;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.signup{
+    padding : 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.formContainer{
+    padding: 30px;
+}
+
+.signupSubmitBtn{
+    width : 200px;
+    height : 30px;
+    margin-top: 2rem;
+    background-color: #FF0063;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    border : none;
+    cursor: pointer;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.alreadyRegisteredContainer{
+    margin-top: 2%;
+    text-align: center;
+    color: White;
+}
+
+.alreadyRegisteredContainer  a{
+    color: #3AB4F2;
+    font-weight: 500;
+}
+
+.ruler{
+    height: 1px;
+    background-color: white;
+    border-radius: 5px;
+    margin-top: 3%;
+}
+
+@media screen and (max-width : 800px) {
+    .signupContainer{
+        width: 60%;
+    }
+}
+
+@media screen and (max-width : 600px) {
+    .signupContainer{
+        width: 80%;
+    }
+}
+
+@media screen and (max-width : 400px) {
+    .signupContainer{
+        width: 90%;
+    }
+}
