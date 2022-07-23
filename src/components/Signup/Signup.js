@@ -8,7 +8,7 @@ const Signup = function(props){
         event.preventDefault();
         console.log("form submitted");
     }
-
+ 
     return(
         <div className={classes.signupContainer}>
             <div className={classes.formContainer}>
