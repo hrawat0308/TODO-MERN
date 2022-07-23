@@ -4,6 +4,7 @@ import './App.css';
 import { Fragment } from "react";
 import Login from "./components/Login/Login";
 import Signup from "./components/Signup/Signup";
+import TodoList from "./components/Todolist/TodoList";
 
 
 function App() {
@@ -12,7 +13,8 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route path="/signup" exact element={<Signup />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/:userId/todo" element={<TodoList />} />
       </Routes>
       
     </Fragment>

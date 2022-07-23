@@ -1,0 +1,115 @@
+.TodoContainer{
+    margin-top: 3%;
+    width: 40%;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #0078AA;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.TodoInputContainer{
+    padding : 10px;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 20px ;
+}
+
+.todoAddBtn{
+    width : 90px;
+    height: 40px;
+    border-radius: 5px;
+    cursor: pointer;
+    border : none;
+    margin-top: 20px;
+    color: white;
+    font-weight: 800;
+    background-color: #3AB4F2;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.todoDeleteBtn{
+    width : 90px;
+    height: 40px;
+    border-radius: 5px;
+    cursor: pointer;
+    border : none;
+    color: white;
+    font-weight: 800;
+    background-color: #D61C4E;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.todo{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding : 20px;
+    width: 85%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 7px;
+    background-color: #3AB4F2;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.todoList{
+    padding-top : 10px;
+    padding-bottom: 10px;
+}
+
+.todoContent{
+    width: 80%;
+}
+
+.formContainer{
+    padding: 30px;
+}
+
+.loginSubmitBtn{
+    width : 200px;
+    height : 30px;
+    margin-top: 2rem;
+    background-color: #FF0063;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    border : none;
+    cursor: pointer;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.newUserContainer{
+    margin-top: 2%;
+    text-align: center;
+    color: White;
+}
+
+
+
+
+@media screen and (max-width : 800px) {
+    .TodoContainer{
+        width: 60%;
+    }
+}
+
+@media screen and (max-width : 600px) {
+    .TodoContainer{
+        width: 80%;
+    }
+}
+
+@media screen and (max-width : 400px) {
+    .TodoContainer{
+        width: 90%;
+    }
+}
+
+.invalidInput{
+    margin-top: 3px;
+    color : #F37878;
+    font-weight: bold;
+    font-size: 1rem;
+}
