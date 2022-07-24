@@ -1,9 +1,11 @@
 import classes from './Login.module.css';
 import {Link } from 'react-router-dom';
 import Input from '../Input/Input';
-import { useState, useContext } from 'react';
+import { useState, useContext, Fragment } from 'react';
 import { AuthContext } from '../../Context/Auth-Context';
-
+import LoadingSpinner from '../Spinner/LoadingSpinner';
+import ErrorModal from '../../Modal/ErrorModal';
+   
 const Login = function(){
     const auth = useContext(AuthContext);
     const [enteredPassword, setEnteredPassword] = useState(""); 
@@ -12,8 +14,11 @@ const Login = function(){
     const [passwordIsTouched, setPasswordIsTouched] = useState(false);
     const [emailIsValid, setEmailIsValid] = useState(false);
     const [passwordIsValid, setPasswordIsValid] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState();
+    
 
-    const onLoginHandler = (event) =>{
+    const onLoginHandler = async (event) =>{
         event.preventDefault();
         setEmailIsTouched(true);
         setPasswordIsTouched(true);
@@ -31,8 +36,31 @@ const Login = function(){
             setEmailIsValid(false);
             return;
         }
-        console.log(enteredEmail, enteredPassword);
-        auth.login();
+        
+        try{
+            setIsLoading(true);
+            const response = await fetch('http://localhost:5000/login',{
+                method: 'POST',
+                headers : {
+                    'Content-Type': 'application/json'
+                },
+                body : JSON.stringify({
+                    email : enteredEmail,
+                    password: enteredPassword,
+                })
+            });
+            const responseData = await response.json();
+            if(!response.ok){
+                throw new Error(responseData.message);
+            }
+            setIsLoading(false);
+            auth.login(responseData.user);
+        }
+        catch(err){
+            console.log(err);
+            setIsLoading(false);
+            setError(err.message || 'Something Went Wrong!!');
+        }
     }
 
     const emailInputOnchange = (event)=>{
@@ -67,9 +95,15 @@ const Login = function(){
             setPasswordIsValid(true);
         }
     }
+    const errorHandler = () => {
+        setError(null);
+    }
 
     return(
+        <Fragment>
+        { !!error && <ErrorModal error={error} onClear={errorHandler} />}
         <div className={classes.loginContainer}>
+            { isLoading && <LoadingSpinner asOverlay />}
             <div className={classes.formContainer}>
             <form className={classes.login} onSubmit={onLoginHandler}>
                 <Input  label="Email" 
@@ -94,6 +128,7 @@ const Login = function(){
             </div>
             </div>
         </div>
+        </Fragment>
     )
 }
 

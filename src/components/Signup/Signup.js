@@ -1,10 +1,13 @@
 import classes from './Signup.module.css';
 import Input from '../Input/Input';
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useContext, Fragment } from 'react';
+import { AuthContext } from '../../Context/Auth-Context';
+import LoadingSpinner from '../Spinner/LoadingSpinner';
+import ErrorModal from '../../Modal/ErrorModal';
 
 const Signup = function(props){
-
+    const auth = useContext(AuthContext);
     const [enteredPassword, setEnteredPassword] = useState(""); 
     const [enteredEmail, setEnteredEmail] = useState(""); 
     const [enteredName, setEnteredName] = useState("");
@@ -14,8 +17,10 @@ const Signup = function(props){
     const [emailIsValid, setEmailIsValid] = useState(false);
     const [passwordIsValid, setPasswordIsValid] = useState(false);
     const [nameIsValid, setNameIsValid] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState();
 
-    const onSignupHandler = (event) =>{
+    const onSignupHandler = async(event) =>{
         event.preventDefault();
         setEmailIsTouched(true);
         setPasswordIsTouched(true);
@@ -29,6 +34,34 @@ const Signup = function(props){
         if(enteredName.trim() !== ""){
             setNameIsValid(true);
         }
+
+        try{
+            setIsLoading(true);
+            const response = await fetch('http://localhost:5000/signup',{
+                method: 'POST',
+                headers : {
+                    'Content-Type': 'application/json'
+                },
+                body : JSON.stringify({
+                    name : enteredName,
+                    email : enteredEmail,
+                    password: enteredPassword,
+                })
+            });
+            const responseData = await response.json();
+            if(!response.ok){
+                throw new Error(responseData.message);
+            }
+            setIsLoading(false);
+            auth.login(responseData.user);
+        }
+        catch(err){
+            console.log(err);
+            setIsLoading(false);
+            setError(err.message || 'Something Went Wrong!!');
+        }
+        
+        
     }
 
     const emailInputOnchange = (event)=>{
@@ -80,9 +113,16 @@ const Signup = function(props){
             setNameIsValid(true);
         }
     }
- 
+
+    const errorHandler = () => {
+        setError(null);
+    }
+  
     return(
+    <Fragment>
+        { !!error && <ErrorModal error={error} onClear={errorHandler} />}    
         <div className={classes.signupContainer}>
+            { isLoading && <LoadingSpinner asOverlay />}
             <div className={classes.formContainer}>
             <form className={classes.signup} onSubmit={onSignupHandler}>
                 <Input  label="Name" 
@@ -114,6 +154,7 @@ const Signup = function(props){
             </div>
             </div>
         </div>
+        </Fragment>
     )
 }
 

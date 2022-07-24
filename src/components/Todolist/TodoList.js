@@ -1,72 +1,73 @@
 import classes from './TodoList.module.css';
 import Input from '../Input/Input';
-import { Fragment, useState } from 'react';
-import { useParams } from 'react-router';
-
-const Dummy_todo = [
-    {   
-        content : "Task1",
-        user : {
-            id : "u1"
-        }
-    },
-    {
-        content : "Task2",
-        user : {
-            id : "u1"
-        }
-    },
-    {
-        content : "Task3",
-        user : {
-            id : "u1"
-        }
-    },
-    {
-        content : "Task2",
-        user : {
-            id : "u2"
-        }
-    },
-    {
-        content : "Task3",
-        user : {
-            id : "u2"
-        }
-    },
-];
-
+import { Fragment, useState, useEffect, useContext } from 'react';
+import { AuthContext } from '../../Context/Auth-Context';
+import LoadingSpinner from '../Spinner/LoadingSpinner';
+import ErrorModal from '../../Modal/ErrorModal';
 
 const TodoList = function(props){
-    const params = useParams();
+    
     const [enteredTodo, setEnteredTodo] = useState("");
     const [todoIsValid, setTodoIsValid] = useState(false);
     const [todoIsTouched, setTodoIsTouched] = useState(false);
-    const findUserTodo = Dummy_todo.filter((entry)=>{
-        if(entry.user.id === params.userId){
-            return entry;
-        }
-    });
-    const [userTodos, setUserTodos] = useState(findUserTodo);
-    
+    const auth = useContext(AuthContext);
+    const [isLoading, setIsLoading] = useState(false);
+    const [userTodos, setUserTodos] = useState([]);
+    const [error, setError] = useState();
 
-    const todoAddHandler = (event) =>{
+    useEffect(()=>{
+        const fetchList = async ()=>{
+            try{
+                setIsLoading(true);
+                const response = await fetch(`http://localhost:5000/${auth.userId}/todo`);
+                const responseData = await response.json();
+                if(!response.ok){
+                    throw new Error("responseData.message");
+                }
+                setIsLoading(false);
+                setUserTodos((prevUserTodo)=>{
+                    return [...responseData.usersTodo];
+                });
+            }
+            catch(err){
+                setIsLoading(false);
+                setError(err.message);
+            }
+        } 
+        fetchList();
+    },[auth.userId]);
+
+    
+    const todoAddHandler = async(event) =>{
         event.preventDefault();
         setTodoIsTouched(true);
         if(enteredTodo.trim() !== ""){
             setTodoIsValid(true);
-            Dummy_todo.push({
-                content : enteredTodo,
-                user : {
-                    id : params.userId
+            
+            try{
+                setIsLoading(true);
+                const response = await fetch(`http://localhost:5000/${auth.userId}/add-todo`,{
+                    method: 'POST',
+                    headers : {
+                        'Content-Type': 'application/json'
+                    },
+                    body : JSON.stringify({
+                        todo : enteredTodo,
+                    })
+                });
+                const responseData = await response.json();
+                if(!response.ok){
+                    throw new Error(responseData.message);
                 }
-            });
-            const findUserTodo = Dummy_todo.filter((entry)=>{
-                if(entry.user.id === params.userId){
-                    return entry;
-                }
-            });
-            setUserTodos(findUserTodo);
+                setIsLoading(false);
+                setUserTodos((prevUserTodo)=>{
+                    return [...prevUserTodo, responseData];
+                });
+            }
+            catch(err){
+                setIsLoading(false);
+                setError(err.message);
+            }
             setEnteredTodo("");
         }else{
             setTodoIsValid(false);
@@ -89,21 +90,39 @@ const TodoList = function(props){
         }
     }
 
-    const todoDeleteHandler = (event) => {
-        console.log(event.target.id)
-        console.log(userTodos);
-        setUserTodos((prevState)=>{
-            return prevState.filter((entry, index)=>{
-                if(index !== event.target.id){
-                    return entry;
-                }
+    const todoDeleteHandler = async (event) => {
+        const todoId = event.target.id;
+        try{
+            setIsLoading(true);
+            const response = await fetch(`http://localhost:5000/${todoId}/delete-todo`,{
+                method : 'DELETE',
             });
-        });
+            if(!response.ok){
+                throw new Error("Something went wrong!!");
+            }
+            setUserTodos(()=>{
+                return userTodos.filter((todo)=>{
+                    return todo._id !== todoId;
+                });
+            });
+            setIsLoading(false);
+        }
+        catch(err){
+            setIsLoading(false);
+            setError(err.message);
+        }
+        
+    }
+
+    const errorHandler = () => {
+        setError(null);
     }
 
     return(
         <Fragment>
+        { !!error && <ErrorModal error={error} onClear={errorHandler} />} 
         <div className={classes.TodoContainer}>
+            { isLoading && <LoadingSpinner asOverlay /> }
             <div className={classes.TodoInputContainer}>
                 <Input  label="Enter your today's Tasks" 
                         type="text" 
@@ -117,17 +136,20 @@ const TodoList = function(props){
             </div>
         </div>
         <div className={classes.TodoContainer}>
+        { userTodos.length === 0 && <div className={classes.todoList}><p className={classes.addTaskText}>Add Some Tasks</p></div>}
+
             { userTodos.length !== 0 && <div className={classes.todoList}>
                 { userTodos.map((entry, index)=>{
                         return(
-                            <div className={classes.todo} key={index}>
-                                <h3 className={classes.todoContent}>{entry.content}</h3>
-                                <button id={index} className={classes.todoDeleteBtn} onClick={todoDeleteHandler}>Delete</button>
+                            <div className={classes.todo} key={entry._id}>
+                                <h3 className={classes.todoContent}>{entry.todo}</h3>
+                                <button id={entry._id} className={classes.todoDeleteBtn} onClick={todoDeleteHandler}>Delete</button>
                             </div> 
                         )
                     }) 
                 } 
             </div>}
+            
         </div>
         </Fragment>
     )
