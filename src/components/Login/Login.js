@@ -1,10 +1,11 @@
 import classes from './Login.module.css';
 import {Link } from 'react-router-dom';
 import Input from '../Input/Input';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { AuthContext } from '../../Context/Auth-Context';
 
 const Login = function(){
-
+    const auth = useContext(AuthContext);
     const [enteredPassword, setEnteredPassword] = useState(""); 
     const [enteredEmail, setEnteredEmail] = useState(""); 
     const [emailIsTouched, setEmailIsTouched] = useState(false);
@@ -21,13 +22,17 @@ const Login = function(){
         }
         else{
             setPasswordIsValid(false);
+            return;
         }
         if(enteredEmail.trim().includes('@')){
             setEmailIsValid(true);
         }
         else{
             setEmailIsValid(false);
+            return;
         }
+        console.log(enteredEmail, enteredPassword);
+        auth.login();
     }
 
     const emailInputOnchange = (event)=>{
