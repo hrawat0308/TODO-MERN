@@ -37,7 +37,7 @@ const Signup = function(props){
 
         try{
             setIsLoading(true);
-            const response = await fetch('http://localhost:5000/signup',{
+            const response = await fetch(process.env.REACT_APP_BACKEND_URL+'/signup',{
                 method: 'POST',
                 headers : {
                     'Content-Type': 'application/json'
@@ -53,7 +53,7 @@ const Signup = function(props){
                 throw new Error(responseData.message);
             }
             setIsLoading(false);
-            auth.login(responseData.user);
+            auth.login(responseData.user, responseData.token);
         }
         catch(err){
             console.log(err);

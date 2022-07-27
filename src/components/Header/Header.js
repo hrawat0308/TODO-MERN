@@ -6,11 +6,15 @@ import { useContext } from 'react';
 const Header = function(props){
     const auth = useContext(AuthContext);
 
+    const logoutHandler = () => {
+        auth.logout();
+    }
+
     return(
         <header className={classes.headerContainer}>
             <section className={classes.headerContentContainer}>
                 <div className={classes.headerLogo}>
-                    <Link to="/" className={classes.links}>TO-DO</Link>
+                    <Link to="/" className={classes.links}>My TODO's</Link>
                 </div>
                 { !auth.isLoggedIn && 
                 <div className={classes.headerLinks}>
@@ -22,8 +26,8 @@ const Header = function(props){
                 {
                 auth.isLoggedIn && 
                 <div className={classes.headerLinks}>
-                    <NavLink to="/logout" className={({ isActive }) => isActive ? classes.linkIsActive : classes.links } >
-                        <p>Logout</p>
+                    <NavLink to="/" className={({ isActive }) => isActive ? classes.linkIsActive : classes.links } >
+                        <p onClick={logoutHandler}>Logout</p>
                     </NavLink>
                 </div>
                 }
