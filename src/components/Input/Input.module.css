@@ -1,0 +1,22 @@
+.label{
+    font-weight: bold;
+    font-size: 1rem;
+    color : #3AB4F2;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    width: 80%;
+}
+
+.input{
+    border-radius: 5px;
+    height: 30px;
+    width: 80%;
+    border: none;
+    font-size: 1rem;
+    font-weight: 400;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.input:focus{
+    outline: none;
+}

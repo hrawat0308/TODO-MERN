@@ -1,0 +1,75 @@
+.loginContainer{
+    margin-top: 3%;
+    width: 40%;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #0078AA;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.login{
+    padding : 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.formContainer{
+    padding: 30px;
+}
+
+.loginSubmitBtn{
+    width : 200px;
+    height : 30px;
+    margin-top: 2rem;
+    background-color: #FF0063;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    border : none;
+    cursor: pointer;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.newUserContainer{
+    margin-top: 2%;
+    text-align: center;
+    color: White;
+}
+
+.newUserContainer  a{
+    color: #3AB4F2;
+    font-weight: 500;
+}
+
+.ruler{
+    height: 1px;
+    background-color: white;
+    border-radius: 5px;
+    margin-top: 3%;
+}
+
+@media screen and (max-width : 800px) {
+    .loginContainer{
+        width: 60%;
+    }
+}
+
+@media screen and (max-width : 600px) {
+    .loginContainer{
+        width: 80%;
+    }
+}
+
+@media screen and (max-width : 400px) {
+    .loginContainer{
+        width: 90%;
+    }
+}
+
+.invalidInput{
+    margin-top: 3px;
+    color : #F37878;
+    font-weight: bold;
+    font-size: 1rem;
+}
