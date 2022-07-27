@@ -19,10 +19,15 @@ const TodoList = function(props){
         const fetchList = async ()=>{
             try{
                 setIsLoading(true);
-                const response = await fetch(`http://localhost:5000/${auth.userId}/todo`);
+                const response = await fetch(process.env.REACT_APP_BACKEND_URL+`/${auth.userId}/todo`,{
+                    method : 'GET',
+                    headers : {
+                        Authorization : 'Bearer ' + auth.token,
+                    }
+                });
                 const responseData = await response.json();
                 if(!response.ok){
-                    throw new Error("responseData.message");
+                    throw new Error(responseData.message);
                 }
                 setIsLoading(false);
                 setUserTodos((prevUserTodo)=>{
@@ -35,7 +40,7 @@ const TodoList = function(props){
             }
         } 
         fetchList();
-    },[auth.userId]);
+    },[auth.userId, auth.token]);
 
     
     const todoAddHandler = async(event) =>{
@@ -43,13 +48,13 @@ const TodoList = function(props){
         setTodoIsTouched(true);
         if(enteredTodo.trim() !== ""){
             setTodoIsValid(true);
-            
             try{
                 setIsLoading(true);
-                const response = await fetch(`http://localhost:5000/${auth.userId}/add-todo`,{
+                const response = await fetch(process.env.REACT_APP_BACKEND_URL+`/${auth.userId}/add-todo`,{
                     method: 'POST',
                     headers : {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        Authorization : 'Bearer ' + auth.token,
                     },
                     body : JSON.stringify({
                         todo : enteredTodo,
@@ -94,8 +99,11 @@ const TodoList = function(props){
         const todoId = event.target.id;
         try{
             setIsLoading(true);
-            const response = await fetch(`http://localhost:5000/${todoId}/delete-todo`,{
+            const response = await fetch(process.env.REACT_APP_BACKEND_URL+`/${todoId}/delete-todo`,{
                 method : 'DELETE',
+                headers : {
+                    Authorization : 'Bearer ' + auth.token,
+                },
             });
             if(!response.ok){
                 throw new Error("Something went wrong!!");
